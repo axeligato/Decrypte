@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { playableCards } from '../lib/cards';
 
 type Answer = 'true' | 'false' | 'unknown';
@@ -8,11 +8,14 @@ const SESSION_SIZE = 10;
 
 export default function Home() {
   const [session, setSession] = useState(0);
+  const [category, setCategory] = useState('Toutes');
+  const categories = useMemo(() => ['Toutes', ...Array.from(new Set(playableCards.map(card => card.category)))], []);
+  const filteredCards = useMemo(() => category === 'Toutes' ? playableCards : playableCards.filter(card => card.category === category), [category]);
   const [index, setIndex] = useState(0);
   const [answer, setAnswer] = useState<Answer | null>(null);
   const [results, setResults] = useState<Result[]>([]);
   const touchStart = useRef<{x:number;y:number}|null>(null);
-  const deck = playableCards.slice(session * SESSION_SIZE, (session + 1) * SESSION_SIZE);
+  const deck = filteredCards.slice(session * SESSION_SIZE, (session + 1) * SESSION_SIZE);
   const card = deck[index];
   const finished = deck.length > 0 && index >= deck.length;
   const choose = useCallback((value: Answer) => {
@@ -38,10 +41,12 @@ export default function Home() {
   function next() { setAnswer(null); setIndex(i => i + 1); }
   function reset() { setIndex(0); setAnswer(null); setResults([]); }
   return <main>
-    <header className="topbar"><span className="brand">POINT DE REPÈRE<span className="accent">.</span></span><span className="topbar-label">LES FAITS DERRIÈRE LES DÉBATS</span></header>
+    <header className="topbar"><span className="brand">FACT UP<span className="accent">.</span></span><span className="topbar-label">LES FAITS DERRIÈRE LES DÉBATS</span></header>
     <section className="hero"><div className="eyebrow">S'informer sans se faire influencer</div><h1>On en parle.<br/>On vérifie.</h1><p className="intro">Des affirmations à explorer, des réponses expliquées et des sources à consulter.</p></section>
+    {playableCards.length > 0 && <nav className="category-nav" aria-label="Choisir un thème">{categories.map(item => <button key={item} aria-pressed={category === item} className={category === item ? 'active' : ''} onClick={() => {setCategory(item);setSession(0);setIndex(0);setAnswer(null);setResults([]);}}>{item}</button>)}</nav>}
     {playableCards.length === 0 ? <section className="empty" role="status"><span className="pill">Vérification éditoriale en cours</span><h2>Les premières cartes se préparent.</h2><p>Le jeu s'ouvrira quand les premières affirmations auront passé la revue de leurs sources, dates et formulations. Aucun résultat ne sera inventé pour remplir la session.</p><p className="muted">L'interface est prête ; le contenu reste en validation.</p></section> :
-    finished ? <section className="card results" aria-live="polite"><div className="eyebrow">Fin de session</div><h2>Merci d'avoir joué.</h2><p className="score">{correct}<span> / {answered}</span></p><p>Réponses correctes parmi les questions auxquelles tu as répondu. {results.length - answered} réponse(s) « Je ne sais pas ».</p><p className="muted">L'objectif est de découvrir les faits, pas de te noter.</p><div className="actions"><button onClick={reset}>Rejouer cette session</button>{playableCards.length > (session+1)*SESSION_SIZE && <button className="secondary" onClick={() => {setSession(s => s+1);reset();}}>Session suivante</button>}</div></section> :
+    deck.length === 0 ? <section className="empty" role="status"><h2>Toutes les cartes de ce thème sont terminées.</h2><p>Tu peux choisir un autre thème ou revenir à toutes les cartes.</p><button onClick={() => {setCategory('Toutes');setSession(0);reset();}}>Voir toutes les cartes</button></section> :
+    finished ? <section className="card results" aria-live="polite"><div className="eyebrow">Fin de session</div><h2>Merci d'avoir joué.</h2><p className="score">{correct}<span> / {answered}</span></p><p>Réponses correctes parmi les questions auxquelles tu as répondu. {results.length - answered} réponse(s) « Je ne sais pas ».</p><p className="muted">L'objectif est de découvrir les faits, pas de te noter.</p><div className="actions"><button onClick={reset}>Rejouer cette session</button>{filteredCards.length > (session+1)*SESSION_SIZE && <button className="secondary" onClick={() => {setSession(s => s+1);reset();}}>Session suivante</button>}</div></section> :
     card ? <section className="play-area" aria-label="Question du jeu">
       <div className="progress-label"><span>QUESTION {index+1} / {deck.length}</span><span>{card.category.toUpperCase()}</span></div>
       <div className="progress" role="progressbar" aria-valuenow={index+1} aria-valuemin={1} aria-valuemax={deck.length} aria-label="Progression de la session"><div style={{width:`${(index+1)/deck.length*100}%`}}/></div>
@@ -52,6 +57,6 @@ export default function Home() {
       </article>
       <p className="keyboard-tip">Clavier : ← Faux · → Vrai · J Je ne sais pas · Entrée Suivant</p>
     </section> : null}
-    <footer className="note"><strong>Notre engagement :</strong> aucune carte jouable sans validation éditoriale, source consultable et date de vérification. Point de Repère ne recommande aucun parti ni candidat.</footer>
+    <footer className="note"><strong>Notre engagement :</strong> aucune carte jouable sans validation éditoriale, source consultable et date de vérification. Fact Up ne recommande aucun parti ni candidat.</footer>
   </main>;
 }
