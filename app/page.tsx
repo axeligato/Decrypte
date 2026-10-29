@@ -38,8 +38,8 @@ export default function Home() {
   function next() { setAnswer(null); setIndex(i => i + 1); }
   function reset() { setIndex(0); setAnswer(null); setResults([]); }
   return <main>
-    <header className="topbar"><span className="brand">DÉCRYPTE<span className="accent">.</span></span><span className="topbar-label">LES FAITS DERRIÈRE LES DÉBATS</span></header>
-    <section className="hero"><div className="eyebrow">S'informer sans se faire influencer</div><h1>On en parle.<br/>On vérifie.</h1><p className="intro">Des affirmations à explorer, des réponses expliquées et des sources à consulter. Pas de jugement, juste des faits et leur contexte.</p></section>
+    <header className="topbar"><span className="brand">POINT DE REPÈRE<span className="accent">.</span></span><span className="topbar-label">LES FAITS DERRIÈRE LES DÉBATS</span></header>
+    <section className="hero"><div className="eyebrow">S'informer sans se faire influencer</div><h1>On en parle.<br/>On vérifie.</h1><p className="intro">Des affirmations à explorer, des réponses expliquées et des sources à consulter.</p></section>
     {playableCards.length === 0 ? <section className="empty" role="status"><span className="pill">Vérification éditoriale en cours</span><h2>Les premières cartes se préparent.</h2><p>Le jeu s'ouvrira quand les premières affirmations auront passé la revue de leurs sources, dates et formulations. Aucun résultat ne sera inventé pour remplir la session.</p><p className="muted">L'interface est prête ; le contenu reste en validation.</p></section> :
     finished ? <section className="card results" aria-live="polite"><div className="eyebrow">Fin de session</div><h2>Merci d'avoir joué.</h2><p className="score">{correct}<span> / {answered}</span></p><p>Réponses correctes parmi les questions auxquelles tu as répondu. {results.length - answered} réponse(s) « Je ne sais pas ».</p><p className="muted">L'objectif est de découvrir les faits, pas de te noter.</p><div className="actions"><button onClick={reset}>Rejouer cette session</button>{playableCards.length > (session+1)*SESSION_SIZE && <button className="secondary" onClick={() => {setSession(s => s+1);reset();}}>Session suivante</button>}</div></section> :
     card ? <section className="play-area" aria-label="Question du jeu">
@@ -52,6 +52,6 @@ export default function Home() {
       </article>
       <p className="keyboard-tip">Clavier : ← Faux · → Vrai · J Je ne sais pas · Entrée Suivant</p>
     </section> : null}
-    <footer className="note"><strong>Notre engagement :</strong> aucune carte jouable sans validation éditoriale, source consultable et date de vérification. Décrypte ne recommande aucun parti ni candidat.</footer>
+    <footer className="note"><strong>Notre engagement :</strong> aucune carte jouable sans validation éditoriale, source consultable et date de vérification. Point de Repère ne recommande aucun parti ni candidat.</footer>
   </main>;
 }
