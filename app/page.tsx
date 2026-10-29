@@ -4,7 +4,7 @@ import { playableCards } from '../lib/cards';
 
 type Answer = 'true' | 'false' | 'unknown';
 type Result = { id: string; answer: Answer; correct: boolean | null };
-const SESSION_SIZE = 10;
+const SESSION_SIZE = 20;
 function shuffle<T>(items: readonly T[], seed: number): T[] {
   const copy = [...items];
   let state = seed >>> 0;
