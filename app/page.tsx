@@ -87,6 +87,25 @@ export default function Home() {
       </article>
       <p className="keyboard-tip">Clavier : ← Faux · → Vrai · J Je ne sais pas · Entrée Suivant</p>
     </section> : null}
+
+    <section className="resource-section" aria-labelledby="resource-heading">
+      <div className="eyebrow">POUR ALLER PLUS LOIN</div>
+      <h2 id="resource-heading">S'informer par soi-même</h2>
+      <p className="resource-intro">Retrouve les données, les textes officiels et les vérifications à la source. Compare les méthodes, les dates et les périmètres : aucune source ne remplace l'esprit critique.</p>
+      <ul className="resource-list">
+        <li><a href="https://factuel.afp.com/" target="_blank" rel="noopener noreferrer"><strong>AFP Factuel</strong><span>Vérification d'affirmations et d'images</span><span className="resource-arrow" aria-hidden="true">↗</span></a></li>
+        <li><a href="https://www.insee.fr/" target="_blank" rel="noopener noreferrer"><strong>Insee</strong><span>Population, emploi et inégalités</span><span className="resource-arrow" aria-hidden="true">↗</span></a></li>
+        <li><a href="https://www.vie-publique.fr/" target="_blank" rel="noopener noreferrer"><strong>Vie publique</strong><span>Institutions et politiques publiques</span><span className="resource-arrow" aria-hidden="true">↗</span></a></li>
+        <li><a href="https://www.data.gouv.fr/" target="_blank" rel="noopener noreferrer"><strong>data.gouv.fr</strong><span>Jeux de données publiques françaises</span><span className="resource-arrow" aria-hidden="true">↗</span></a></li>
+        <li><a href="https://ec.europa.eu/eurostat" target="_blank" rel="noopener noreferrer"><strong>Eurostat</strong><span>Statistiques comparables dans l'Union européenne</span><span className="resource-arrow" aria-hidden="true">↗</span></a></li>
+        <li><a href="https://eur-lex.europa.eu/" target="_blank" rel="noopener noreferrer"><strong>EUR-Lex</strong><span>Textes officiels du droit européen</span><span className="resource-arrow" aria-hidden="true">↗</span></a></li>
+        <li><a href="https://www.oecd.org/fr/" target="_blank" rel="noopener noreferrer"><strong>OCDE</strong><span>Études et comparaisons internationales</span><span className="resource-arrow" aria-hidden="true">↗</span></a></li>
+        <li><a href="https://data.imf.org/fr-fr" target="_blank" rel="noopener noreferrer"><strong>FMI</strong><span>Données économiques et financières</span><span className="resource-arrow" aria-hidden="true">↗</span></a></li>
+        <li><a href="https://donnees.banquemondiale.org/" target="_blank" rel="noopener noreferrer"><strong>Banque mondiale</strong><span>Indicateurs mondiaux de développement</span><span className="resource-arrow" aria-hidden="true">↗</span></a></li>
+        <li><a href="https://www.who.int/fr" target="_blank" rel="noopener noreferrer"><strong>OMS</strong><span>Données et recommandations de santé publique</span><span className="resource-arrow" aria-hidden="true">↗</span></a></li>
+      </ul>
+      <p className="resource-disclaimer">Sélection indicative de ressources publiques et journalistiques, sans affiliation ni garantie d'infaillibilité.</p>
+    </section>
     <footer className="note"><strong>Notre engagement :</strong> aucune carte jouable sans validation éditoriale, source consultable et date de vérification. Fact Up ne recommande aucun parti ni candidat.</footer>
   </main>;
 }
