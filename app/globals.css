@@ -31,3 +31,17 @@ html,body{background:var(--page);color:var(--text)}
 .theme-thumb{position:absolute;left:3px;top:3px;width:13px;height:13px;border-radius:50%;background:var(--text);transition:transform .18s ease}
 [data-theme="dark"] .theme-thumb{transform:translateX(13px)}
 @media(max-width:500px){.topbar-right{gap:8px}.theme-toggle{min-width:100px}}
+
+/* Further-reading directory: lightweight and responsive in both themes */
+.resource-section{margin-top:68px;padding:34px 0 20px;border-top:1px solid var(--line)}
+.resource-section h2{font-size:clamp(26px,5vw,40px);letter-spacing:-.04em;margin:12px 0}
+.resource-intro{max-width:650px;color:var(--muted);margin:0 0 22px}
+.resource-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;list-style:none;padding:0;margin:0}
+.resource-list li{min-width:0}
+.resource-list a{display:grid;grid-template-columns:1fr auto;gap:5px 10px;align-items:start;text-decoration:none;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:15px;min-height:88px;transition:border-color .15s ease,transform .15s ease}
+.resource-list a:hover{border-color:var(--border);transform:translateY(-1px)}
+.resource-list strong{font-size:15px}
+.resource-list span:not(.resource-arrow){grid-column:1;grid-row:2;color:var(--muted);font-size:13px;line-height:1.4}
+.resource-arrow{grid-column:2;grid-row:1;font-size:17px}
+.resource-disclaimer{color:var(--muted);font-size:12px;margin:18px 0 0}
+@media(max-width:560px){.resource-list{grid-template-columns:1fr}.resource-section{margin-top:48px}}
