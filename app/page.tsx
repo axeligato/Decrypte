@@ -17,6 +17,22 @@ function shuffle<T>(items: readonly T[], seed: number): T[] {
 }
 
 export default function Home() {
+  const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  useEffect(() => {
+    try {
+      const saved = window.localStorage.getItem('factup-theme');
+      if (saved === 'dark' || saved === 'light') setTheme(saved);
+    } catch { /* local storage may be unavailable */ }
+  }, []);
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    document.documentElement.style.colorScheme = theme;
+  }, [theme]);
+  function toggleTheme() {
+    const next = theme === 'light' ? 'dark' : 'light';
+    setTheme(next);
+    try { window.localStorage.setItem('factup-theme', next); } catch { /* optional persistence */ }
+  }
   const [session, setSession] = useState(0);
   const [shuffleSeed, setShuffleSeed] = useState(0);
   useEffect(() => { setShuffleSeed(Math.floor(Math.random() * 0xFFFFFFFF)); }, []);
@@ -55,7 +71,7 @@ export default function Home() {
   function reset() { setIndex(0); setAnswer(null); setResults([]); }
   function replay() { reset(); setSession(0); newShuffle(); }
   return <main>
-    <header className="topbar"><span className="brand">FACT UP<span className="accent">.</span></span><span className="topbar-label">LES FAITS DERRIÈRE LES DÉBATS</span></header>
+    <header className="topbar"><span className="brand">FACT UP<span className="accent">.</span></span><div className="topbar-right"><span className="topbar-label">LES FAITS DERRIÈRE LES DÉBATS</span><button type="button" className="theme-toggle" role="switch" aria-checked={theme === 'dark'} aria-label="Mode sombre" title={theme === 'dark' ? 'Activer le mode clair' : 'Activer le mode sombre'} onClick={toggleTheme}><span className="theme-icon" aria-hidden="true">☀</span><span className="theme-track" aria-hidden="true"><span className="theme-thumb" /></span><span className="theme-icon" aria-hidden="true">☾</span></button></div></header>
     <section className="hero"><div className="eyebrow">S'informer sans se faire influencer</div><h1>On en parle.<br/>On vérifie.</h1><p className="intro">Des affirmations à explorer, des réponses expliquées et des sources à consulter.</p></section>
     {playableCards.length > 0 && <nav className="category-nav" aria-label="Choisir un thème">{categories.map(item => <button key={item} aria-pressed={category === item} className={category === item ? 'active' : ''} onClick={() => {setCategory(item);setSession(0);reset();newShuffle();}}>{item}</button>)}</nav>}
     {playableCards.length === 0 ? <section className="empty" role="status"><span className="pill">Vérification éditoriale en cours</span><h2>Les premières cartes se préparent.</h2><p>Le jeu s'ouvrira quand les premières affirmations auront passé la revue de leurs sources, dates et formulations. Aucun résultat ne sera inventé pour remplir la session.</p><p className="muted">L'interface est prête ; le contenu reste en validation.</p></section> :
