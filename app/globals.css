@@ -45,3 +45,18 @@ html,body{background:var(--page);color:var(--text)}
 .resource-arrow{grid-column:2;grid-row:1;font-size:17px}
 .resource-disclaimer{color:var(--muted);font-size:12px;margin:18px 0 0}
 @media(max-width:560px){.resource-list{grid-template-columns:1fr}.resource-section{margin-top:48px}}
+
+/* Reduce the distance between introduction and gameplay */
+.hero{padding-top:56px;padding-bottom:24px}
+.hero .intro{margin-bottom:0}
+.play-area{padding-top:18px}
+.category-picker{padding:12px 0 0}
+.category-trigger{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;min-height:48px;padding:10px 16px;border:1px solid var(--line);border-radius:12px;background:var(--surface);color:var(--text);font-weight:700}
+.category-trigger:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.category-current{font-weight:400;color:var(--muted)}
+.category-nav{padding:10px 0 0}
+.category-nav[hidden]{display:none}
+@media(max-width:500px){.hero{padding-top:38px;padding-bottom:18px}.play-area{padding-top:14px}}
+/* Keep the source directory two-up on mobile as well */
+.resource-list{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:560px){.resource-list{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.resource-list a{padding:11px;min-height:96px}.resource-list strong{font-size:13px}.resource-list span:not(.resource-arrow){font-size:11px}.resource-arrow{font-size:14px}}
