@@ -94,8 +94,7 @@ export default function Home() {
     setCategoriesOpen(false);
   }
   return <main>
-    <header className="topbar"><span className="brand">FACT UP<span className="accent">.</span></span><div className="topbar-right"><span className="topbar-label">LES FAITS DERRIÈRE LES DÉBATS</span><button type="button" className="theme-toggle" role="switch" aria-checked={theme === 'dark'} aria-label="Mode sombre" title={theme === 'dark' ? 'Activer le mode clair' : 'Activer le mode sombre'} onClick={toggleTheme}><span className="theme-icon" aria-hidden="true">☀</span><span className="theme-track" aria-hidden="true"><span className="theme-thumb" /></span><span className="theme-icon" aria-hidden="true">☾</span></button></div></header>
-    <section className="hero"><div className="eyebrow">S'informer sans se faire influencer</div><h1>On en parle.<br/>On vérifie.</h1><p className="intro">Des affirmations à explorer, des réponses expliquées et des sources à consulter.</p></section>
+    <header className="topbar"><span className="brand">DÉCRYPTE<span className="accent">.</span></span><div className="topbar-right"><span className="topbar-label">LES FAITS DERRIÈRE LES DÉBATS</span><button type="button" className="theme-toggle" role="switch" aria-checked={theme === 'dark'} aria-label="Mode sombre" title={theme === 'dark' ? 'Activer le mode clair' : 'Activer le mode sombre'} onClick={toggleTheme}><span className="theme-icon" aria-hidden="true">☀</span><span className="theme-track" aria-hidden="true"><span className="theme-thumb" /></span><span className="theme-icon" aria-hidden="true">☾</span></button></div></header>
     {playableCards.length > 0 && <section className="category-picker"><button type="button" className="category-trigger" aria-expanded={categoriesOpen} aria-controls="category-options" onClick={() => setCategoriesOpen(open => !open)}><span>Jouer par catégories <span className="category-current">· {category}</span></span><span aria-hidden="true">{categoriesOpen ? "−" : "+"}</span></button><nav id="category-options" className="category-nav" aria-label="Choisir un thème" hidden={!categoriesOpen}>{categories.map(item => <button type="button" key={item} aria-pressed={category === item} className={category === item ? 'active' : ''} onClick={() => {selectCategory(item);}}>{item}</button>)}</nav></section>}
     {playableCards.length === 0 ? <section className="empty" role="status"><span className="pill">Vérification éditoriale en cours</span><h2>Les premières cartes se préparent.</h2><p>Le jeu s'ouvrira quand les premières affirmations auront passé la revue de leurs sources, dates et formulations. Aucun résultat ne sera inventé pour remplir la session.</p><p className="muted">L'interface est prête ; le contenu reste en validation.</p></section> :
     card ? <section className="play-area" aria-label="Question du jeu">
@@ -108,6 +107,7 @@ export default function Home() {
       <p className="keyboard-tip">Clavier : ← Faux · → Vrai · J Je ne sais pas · Entrée Suivant</p>
     </section> : null}
 
+    <section className="hero"><div className="eyebrow">S'informer sans se faire influencer</div><h1>On en parle.<br/>On vérifie.</h1><p className="intro">Des affirmations à explorer, des réponses expliquées et des sources à consulter.</p></section>
     <section className="resource-section" aria-labelledby="resource-heading">
       <div className="eyebrow">POUR ALLER PLUS LOIN</div>
       <h2 id="resource-heading">S'informer par soi-même</h2>
@@ -126,6 +126,6 @@ export default function Home() {
       </ul>
       <p className="resource-disclaimer">Sélection indicative de ressources publiques et journalistiques, sans affiliation ni garantie d'infaillibilité.</p>
     </section>
-    <footer className="note"><strong>Notre engagement :</strong> aucune carte jouable sans validation éditoriale, source consultable et date de vérification. Fact Up ne recommande aucun parti ni candidat.</footer>
+    <footer className="note"><strong>Notre engagement :</strong> aucune carte jouable sans validation éditoriale, source consultable et date de vérification. Décrypte ne recommande aucun parti ni candidat.</footer>
   </main>;
 }
