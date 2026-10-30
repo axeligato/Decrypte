@@ -47,7 +47,10 @@ export default function Home() {
         if (typeof saved.category === 'string' && (saved.category === 'Toutes' || playableCards.some(card => card.category === saved.category))) setCategory(saved.category);
         if (Number.isInteger(saved.seed) && saved.seed >= 0) setShuffleSeed(saved.seed);
         else setShuffleSeed(Math.floor(Math.random() * 0xFFFFFFFF));
-        if (Number.isInteger(saved.index) && saved.index >= 0) setIndex(saved.index);
+        if (Number.isInteger(saved.index) && saved.index >= 0) {
+          const available = playableCards.filter(card => saved.category === 'Toutes' || !playableCards.some(c => c.category === saved.category) || card.category === saved.category).length;
+          setIndex(saved.index < available ? saved.index : 0);
+        }
       } else newShuffle();
     } catch { newShuffle(); }
     setProgressReady(true);
