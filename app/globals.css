@@ -88,3 +88,17 @@ html{scroll-behavior:smooth}
 .resource-shortcut span:first-child{font-size:20px;line-height:1}
 @media(max-width:500px){.resource-shortcut{right:12px;bottom:calc(76px + env(safe-area-inset-bottom,0px))}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+/* Breathing room at the top of the learning feed */
+.topbar{margin-bottom:32px}
+.category-picker{padding-top:0;margin-bottom:18px}
+.play-area{padding-top:10px}
+.play-area .progress-label{margin-bottom:16px}
+.swipe-card{touch-action:pan-y;overscroll-behavior-x:contain}
+@media(max-width:500px){
+  main{padding-top:24px}
+  .topbar{margin-bottom:28px}
+  .category-picker{padding-top:0;margin-bottom:20px}
+  .play-area{padding-top:8px}
+  .play-area .progress-label{margin-bottom:14px}
+}
