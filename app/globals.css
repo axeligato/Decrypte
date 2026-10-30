@@ -108,3 +108,8 @@ html{scroll-behavior:smooth}
 [data-theme="dark"]{--french-blue:#86b5ff;--french-red:#ff929b}
 .brand .accent{color:var(--french-blue)}
 .topbar{border-bottom:2px solid transparent;border-image:linear-gradient(90deg,var(--french-blue) 0 12%,var(--surface) 12% 88%,var(--french-red) 88% 100%) 1;padding-bottom:16px}
+
+/* Optional plain-language wording, secondary to the answer actions. */
+.plain-language-toggle{display:inline-flex;align-items:center;justify-content:center;min-height:44px;margin:0 0 8px;padding:8px 12px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--text);font-size:13px;font-weight:600}
+.plain-language-toggle:hover{border-color:var(--text)}
+.plain-language-toggle:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
