@@ -81,6 +81,7 @@ export default function Home() {
   useEffect(() => {
     function onKey(event: KeyboardEvent) {
       if (event.target instanceof HTMLElement && ['INPUT','TEXTAREA','BUTTON'].includes(event.target.tagName)) return;
+      if (finished) return;
       if (card && answer === null) {
         if (event.key === 'ArrowLeft') choose('false');
         if (event.key === 'ArrowRight') choose('true');
@@ -90,7 +91,7 @@ export default function Home() {
     }
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [card, answer, choose, index, filteredCards]);
+  }, [card, answer, choose, index, finished]);
   function next() {
     if (card && answer !== null && answer !== 'unknown' && (answer === 'true') === card.answer) setCorrect(v=>v+1);
     setAnswer(null);
