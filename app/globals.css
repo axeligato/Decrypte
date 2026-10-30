@@ -68,7 +68,7 @@ html,body{background:var(--page);color:var(--text)}
 .hero .eyebrow{font-size:11px}
 .category-picker{padding-top:9px}
 .play-area{padding-top:12px}
-.swipe-card{cursor:grab;user-select:none;-webkit-user-select:none}
+
 .swipe-card:active{cursor:grabbing}
 .swipe-card .answer,.swipe-card .answer p,.swipe-card .answer a{user-select:text;-webkit-user-select:text;cursor:auto}
 @media(max-width:500px){.hero{padding-top:20px;padding-bottom:10px}.hero h1{font-size:clamp(40px,11vw,58px)}.hero .intro{font-size:14px}.category-picker{padding-top:8px}.play-area{padding-top:10px}}
@@ -94,7 +94,7 @@ html{scroll-behavior:smooth}
 .category-picker{padding-top:0;margin-bottom:18px}
 .play-area{padding-top:10px}
 .play-area .progress-label{margin-bottom:16px}
-.swipe-card{touch-action:pan-y;overscroll-behavior-x:contain}
+
 @media(max-width:500px){
   main{padding-top:24px}
   .topbar{margin-bottom:28px}
@@ -115,5 +115,11 @@ html{scroll-behavior:smooth}
 .plain-language-toggle:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 
 /* Let vertical scrolling remain native while tracking horizontal touch gestures in JS. */
-.swipe-card{touch-action:pan-y;-webkit-user-select:none;user-select:none}
-.swipe-card .answer{-webkit-user-select:text;user-select:text}
+
+
+
+/* End-of-session score */
+.session-results{margin-top:22px;text-align:center;padding:40px 24px}
+.session-results h2{font-size:clamp(58px,12vw,94px);letter-spacing:-.06em;margin:20px 0}
+.session-results p{max-width:480px;margin:0 auto 24px}
+.restart-session{background:var(--button);color:var(--button-text);border:2px solid var(--border);border-radius:999px;padding:15px 26px;min-height:48px;font-weight:700}
