@@ -17,6 +17,7 @@ function shuffle<T>(items: readonly T[], seed: number): T[] {
 export default function Home() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [plainLanguage, setPlainLanguage] = useState(true);
+  const [copiedResult, setCopiedResult] = useState(false);
   useEffect(() => {
     try {
       const saved = window.localStorage.getItem('factup-theme');
@@ -56,7 +57,7 @@ export default function Home() {
     const selected = [...unseen, ...randomized.filter(c => !available.some(a => a.id === c.id))].slice(0,20);
     const nextUsed = available.length < 20 ? selected.map(c=>c.id) : [...used, ...selected.map(c=>c.id)];
     try { window.localStorage.setItem(usedKey, JSON.stringify(nextUsed)); } catch {}
-    setSessionIds(selected.map(c=>c.id));setIndex(0);setAnswer(null);setCorrect(0);setFinished(false);
+    setSessionIds(selected.map(c=>c.id));setIndex(0);setAnswer(null);setCorrect(0);setFinished(false);setCopiedResult(false);
   }
   useEffect(() => {
     try {
@@ -101,11 +102,22 @@ export default function Home() {
   function selectCategory(item: string) {
     setCategory(item);createSession(item);setCategoriesOpen(false);
   }
+  const shareUrl = 'https://axeligato.github.io/Decrypte/';
+  const shareText = `J'ai obtenu ${correct}/${sessionCards.length} sur Décrypte ! À ton tour de tester tes connaissances : ${shareUrl}`;
+  const shareMessage = `J'ai obtenu ${correct}/${sessionCards.length} sur Décrypte ! À ton tour de tester tes connaissances.`;
+  async function copyResult() {
+    try {
+      await navigator.clipboard.writeText(shareText);
+      setCopiedResult(true);
+    } catch {
+      setCopiedResult(false);
+    }
+  }
   return <main>
     <header className="topbar"><span className="brand">DÉCRYPTE<span className="accent">.</span></span><div className="topbar-right"><span className="topbar-label">LES FAITS DERRIÈRE LES DÉBATS</span><button type="button" className="theme-toggle" role="switch" aria-checked={theme === 'dark'} aria-label="Mode sombre" title={theme === 'dark' ? 'Activer le mode clair' : 'Activer le mode sombre'} onClick={toggleTheme}><span className="theme-icon" aria-hidden="true">☀</span><span className="theme-track" aria-hidden="true"><span className="theme-thumb" /></span><span className="theme-icon" aria-hidden="true">☾</span></button></div></header>
     {playableCards.length > 0 && <section className="category-picker"><button type="button" className="category-trigger" aria-expanded={categoriesOpen} aria-controls="category-options" onClick={() => setCategoriesOpen(open => !open)}><span>Jouer par catégories <span className="category-current">· {category}</span></span><span aria-hidden="true">{categoriesOpen ? "−" : "+"}</span></button><nav id="category-options" className="category-nav" aria-label="Choisir un thème" hidden={!categoriesOpen}>{categories.map(item => <button type="button" key={item} aria-pressed={category === item} className={category === item ? 'active' : ''} onClick={() => {selectCategory(item);}}>{item}</button>)}</nav></section>}
     {playableCards.length === 0 ? <section className="empty" role="status"><span className="pill">Vérification éditoriale en cours</span><h2>Les premières cartes se préparent.</h2><p>Le jeu s'ouvrira quand les premières affirmations auront passé la revue de leurs sources, dates et formulations. Aucun résultat ne sera inventé pour remplir la session.</p><p className="muted">L'interface est prête ; le contenu reste en validation.</p></section> :
-    finished ? <section className="card session-results" aria-live="polite"><div className="eyebrow">SÉRIE TERMINÉE</div><h2>{correct} / {sessionCards.length}</h2><p>Tu as répondu correctement à {correct} question{correct>1?'s':''} sur {sessionCards.length}. Les réponses « Je ne sais pas » ne comptent pas comme bonnes réponses.</p><button type="button" className="restart-session" onClick={()=>createSession(category)}>Nouvelle série aléatoire →</button></section> : card ? <section className="play-area" aria-label="Question du jeu">
+    finished ? <section className="card session-results" aria-live="polite"><div className="eyebrow">SÉRIE TERMINÉE</div><h2>{correct} / {sessionCards.length}</h2><p>Tu as répondu correctement à {correct} question{correct>1?'s':''} sur {sessionCards.length}. Les réponses « Je ne sais pas » ne comptent pas comme bonnes réponses.</p><div className="result-sharing"><h3>Partager mon résultat</h3><div className="result-share-links"><a href={`https://wa.me/?text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer" aria-label="Partager sur WhatsApp">WhatsApp ↗</a><a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareMessage)}`} target="_blank" rel="noopener noreferrer" aria-label="Partager sur Facebook">Facebook ↗</a><a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareMessage)}&url=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer" aria-label="Partager sur X">X ↗</a><a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer" aria-label="Partager sur LinkedIn">LinkedIn ↗</a></div><button type="button" className="copy-result" onClick={copyResult}>{copiedResult ? 'Résultat copié ✓' : 'Copier le résultat et le lien'}</button><p className="muted result-share-note">Sur Facebook et LinkedIn, le lien vers Décrypte est partagé ; tu peux ajouter ta note dans ton message.</p></div><button type="button" className="restart-session" onClick={()=>createSession(category)}>Nouvelle série aléatoire →</button></section> : card ? <section className="play-area" aria-label="Question du jeu">
       <div className="progress-label"><span>QUESTION {index+1} / {sessionCards.length}</span><span>{card.category.toUpperCase()}</span></div>
       <article className="card">
         <div className="eyebrow">VRAI OU FAUX ?</div><h2>{plainLanguage && card.simpleClaim ? card.simpleClaim : card.claim}</h2>{card.simpleClaim && <button type="button" className="plain-language-toggle" aria-pressed={plainLanguage} onClick={() => setPlainLanguage(value => !value)}>{plainLanguage ? "Voir la formulation précise" : "Dire plus simplement"}</button>}
