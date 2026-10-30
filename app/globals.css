@@ -132,3 +132,8 @@ html{scroll-behavior:smooth}
 .result-share-links a:hover,.copy-result:hover{border-color:var(--text)}
 .result-share-links a:focus-visible,.copy-result:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
 .result-share-note{font-size:12px;line-height:1.5;margin:12px auto 0!important}
+
+/* Low-key creator credit below the project description. */
+.note .creator-credit{margin-top:12px;font-size:12px;opacity:.75}
+.note .creator-credit a{color:inherit;text-underline-offset:3px;font-weight:600}
+.note .creator-credit a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}

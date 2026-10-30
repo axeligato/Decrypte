@@ -147,6 +147,6 @@ export default function Home() {
       </ul>
       <p className="resource-disclaimer">Sélection indicative de ressources publiques et journalistiques, sans affiliation ni garantie d'infaillibilité.</p>
     </section>
-    <footer className="note">Rendre plus faciles à comprendre les sujets qui touchent notre quotidien.</footer>
+    <footer className="note"><p>Rendre plus faciles à comprendre les sujets qui touchent notre quotidien.</p><p className="creator-credit">Un projet indépendant imaginé par <a href="https://www.linkedin.com/in/axel-xiberras-aa0105172/" target="_blank" rel="noopener noreferrer" aria-label="Profil LinkedIn d’Axel (nouvel onglet)">Axel ↗</a></p></footer>
   </main>;
 }
