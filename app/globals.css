@@ -72,3 +72,8 @@ html,body{background:var(--page);color:var(--text)}
 .swipe-card:active{cursor:grabbing}
 .swipe-card .answer,.swipe-card .answer p,.swipe-card .answer a{user-select:text;-webkit-user-select:text;cursor:auto}
 @media(max-width:500px){.hero{padding-top:20px;padding-bottom:10px}.hero h1{font-size:clamp(40px,11vw,58px)}.hero .intro{font-size:14px}.category-picker{padding-top:8px}.play-area{padding-top:10px}}
+
+/* The introduction now sits after the card feed, immediately before further reading. */
+.hero{margin-top:48px;padding-top:28px;padding-bottom:28px;border-top:1px solid var(--line);border-bottom:0}
+.resource-section{margin-top:0;padding-top:24px}
+@media(max-width:500px){.hero{margin-top:36px;padding-top:22px;padding-bottom:20px}.resource-section{padding-top:18px}}
