@@ -107,7 +107,8 @@ export default function Home() {
       <p className="keyboard-tip">Clavier : ← Faux · → Vrai · J Je ne sais pas · Entrée Suivant</p>
     </section> : null}
 
-    <section className="hero"><div className="eyebrow">S'informer sans se faire influencer</div><h1>On en parle.<br/>On vérifie.</h1><p className="intro">Des affirmations à explorer, des réponses expliquées et des sources à consulter.</p></section>
+    <section className="hero"><div className="eyebrow">S'informer sans se faire influencer</div><h1>On en parle.<br/>On vérifie.</h1><p className="intro">Des affirmations à explorer, des réponses expliquées et des sources à consulter.</p><a className="resource-down-arrow" href="#resource-heading" aria-label="Découvrir les sources pour aller plus loin"><span aria-hidden="true">↓</span><span>Découvrir les sources</span></a></section>
+    <a className="resource-shortcut" href="#resource-heading" aria-label="Aller aux sources et liens utiles" title="Aller aux sources"><span aria-hidden="true">↓</span><span>Sources</span></a>
     <section className="resource-section" aria-labelledby="resource-heading">
       <div className="eyebrow">POUR ALLER PLUS LOIN</div>
       <h2 id="resource-heading">S'informer par soi-même</h2>
