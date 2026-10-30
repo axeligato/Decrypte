@@ -60,7 +60,6 @@ export default function Home() {
     try { window.localStorage.setItem('factup-progress-v1', JSON.stringify({ category, seed: shuffleSeed, index })); } catch { /* optional persistence */ }
   }, [category, shuffleSeed, index, progressReady]);
   const touchStart = useRef<{x:number;y:number}|null>(null);
-  const mouseStart = useRef<{x:number;y:number}|null>(null);
   const card = filteredCards[index] || filteredCards[0];
   const choose = useCallback((value: Answer) => {
     if (!card || answer !== null) return;
@@ -99,7 +98,16 @@ export default function Home() {
     {playableCards.length === 0 ? <section className="empty" role="status"><span className="pill">Vérification éditoriale en cours</span><h2>Les premières cartes se préparent.</h2><p>Le jeu s'ouvrira quand les premières affirmations auront passé la revue de leurs sources, dates et formulations. Aucun résultat ne sera inventé pour remplir la session.</p><p className="muted">L'interface est prête ; le contenu reste en validation.</p></section> :
     card ? <section className="play-area" aria-label="Question du jeu">
       <div className="progress-label"><span>À DÉCOUVRIR</span><span>{card.category.toUpperCase()}</span></div>
-      <article className="card swipe-card" onMouseDown={e => {if(e.button !== 0 || (e.target instanceof HTMLElement && e.target.closest("button, a"))) return; mouseStart.current={x:e.clientX,y:e.clientY};}} onMouseUp={e => {if(answer!==null || !mouseStart.current)return; const dx=e.clientX-mouseStart.current.x;const dy=e.clientY-mouseStart.current.y;mouseStart.current=null;if(Math.abs(dx)>85 && Math.abs(dx)>Math.abs(dy)*1.5) choose(dx>0?"true":"false");}} onMouseLeave={() => {mouseStart.current=null;}} onTouchStart={e => {const t=e.touches[0];touchStart.current={x:t.clientX,y:t.clientY};}} onTouchEnd={e => {if(answer!==null || !touchStart.current)return;const t=e.changedTouches[0];const dx=t.clientX-touchStart.current.x;const dy=t.clientY-touchStart.current.y;touchStart.current=null;if(Math.abs(dx)>85 && Math.abs(dx)>Math.abs(dy)*1.5) choose(dx>0?'true':'false');}}>
+      <article className="card swipe-card" onPointerDown={e => {
+        if (answer !== null || !e.isPrimary || (e.pointerType === 'mouse' && e.button !== 0) || (e.target instanceof HTMLElement && e.target.closest('button, a'))) return;
+        touchStart.current = {x:e.clientX,y:e.clientY};
+      }} onPointerUp={e => {
+        if (answer !== null || !touchStart.current || !e.isPrimary) return;
+        const dx=e.clientX-touchStart.current.x;
+        const dy=e.clientY-touchStart.current.y;
+        touchStart.current=null;
+        if(Math.abs(dx)>55 && Math.abs(dx)>Math.abs(dy)*1.2) choose(dx>0?'true':'false');
+      }} onPointerCancel={() => {touchStart.current=null;}} onPointerLeave={e => {if(e.pointerType==='mouse')touchStart.current=null;}}>
         <div className="eyebrow">VRAI OU FAUX ?</div><h2>{card.claim}</h2>
         {answer === null ? <><p className="muted helper">Glisse la carte vers la gauche pour Faux ou vers la droite pour Vrai. Les boutons restent disponibles.</p><div className="actions answer-buttons"><button className="secondary" onClick={() => choose('false')}>← Faux</button><button onClick={() => choose('true')}>Vrai →</button></div><button className="unknown" onClick={() => choose('unknown')}>Je ne sais pas</button></> :
         <div className="answer" aria-live="polite"><span className="pill">{card.answer ? 'VRAI' : 'FAUX'}</span><h3>{answer === 'unknown' ? 'Découvrons la réponse.' : (answer === 'true') === card.answer ? 'Bien vu !' : 'Voici ce que disent les faits.'}</h3><p>{card.explanation}</p><div className="sources"><div className="eyebrow">SOURCES CONSULTABLES</div>{card.sources.map(source=><p key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.label} ↗</a></p>)}<p className="muted">Dernière validation : {card.verifiedAt}</p></div><div className="actions reveal-next"><button onClick={next}>{'Question suivante →'}</button></div></div>}
