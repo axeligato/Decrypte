@@ -102,3 +102,9 @@ html{scroll-behavior:smooth}
   .play-area{padding-top:8px}
   .play-area .progress-label{margin-bottom:14px}
 }
+
+/* Discreet French tricolor accents, without changing the quiz's neutral UI. */
+:root{--french-blue:#2455a4;--french-red:#bb3946}
+[data-theme="dark"]{--french-blue:#86b5ff;--french-red:#ff929b}
+.brand .accent{color:var(--french-blue)}
+.topbar{border-bottom:2px solid transparent;border-image:linear-gradient(90deg,var(--french-blue) 0 12%,var(--surface) 12% 88%,var(--french-red) 88% 100%) 1;padding-bottom:16px}
