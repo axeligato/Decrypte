@@ -123,3 +123,12 @@ html{scroll-behavior:smooth}
 .session-results h2{font-size:clamp(58px,12vw,94px);letter-spacing:-.06em;margin:20px 0}
 .session-results p{max-width:480px;margin:0 auto 24px}
 .restart-session{background:var(--button);color:var(--button-text);border:2px solid var(--border);border-radius:999px;padding:15px 26px;min-height:48px;font-weight:700}
+
+/* Share controls on the end-of-session score screen. */
+.result-sharing{margin:24px auto;max-width:560px;padding:22px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.result-sharing h3{font-size:17px;margin:0 0 16px}
+.result-share-links{display:flex;justify-content:center;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.result-share-links a,.copy-result{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 14px;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--text);text-decoration:none;font-size:14px;font-weight:700;cursor:pointer}
+.result-share-links a:hover,.copy-result:hover{border-color:var(--text)}
+.result-share-links a:focus-visible,.copy-result:focus-visible{outline:3px solid var(--accent);outline-offset:3px}
+.result-share-note{font-size:12px;line-height:1.5;margin:12px auto 0!important}
