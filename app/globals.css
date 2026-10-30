@@ -77,3 +77,14 @@ html,body{background:var(--page);color:var(--text)}
 .hero{margin-top:48px;padding-top:28px;padding-bottom:28px;border-top:1px solid var(--line);border-bottom:0}
 .resource-section{margin-top:0;padding-top:24px}
 @media(max-width:500px){.hero{margin-top:36px;padding-top:22px;padding-bottom:20px}.resource-section{padding-top:18px}}
+
+/* Persistent, keyboard-accessible discovery shortcut */
+html{scroll-behavior:smooth}
+#resource-heading{scroll-margin-top:24px}
+.resource-down-arrow{display:inline-flex;align-items:center;gap:12px;margin-top:16px;padding:10px 15px;border:1px solid var(--border);border-radius:999px;text-decoration:none;font-size:13px;font-weight:700;min-height:44px}
+.resource-down-arrow span:first-child{font-size:24px;line-height:1}
+.resource-down-arrow:hover,.resource-shortcut:hover{background:var(--highlight);color:var(--text)}
+.resource-shortcut{position:fixed;right:max(16px,calc((100vw - 880px)/2));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:45;display:flex;align-items:center;gap:7px;padding:10px 14px;min-height:44px;background:var(--button);color:var(--button-text);border:1px solid var(--line);border-radius:999px;text-decoration:none;font-weight:700;font-size:13px;box-shadow:0 3px 12px rgba(0,0,0,.18)}
+.resource-shortcut span:first-child{font-size:20px;line-height:1}
+@media(max-width:500px){.resource-shortcut{right:12px;bottom:calc(76px + env(safe-area-inset-bottom,0px))}}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
