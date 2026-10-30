@@ -16,6 +16,7 @@ function shuffle<T>(items: readonly T[], seed: number): T[] {
 
 export default function Home() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
+  const [plainLanguage, setPlainLanguage] = useState(true);
   useEffect(() => {
     try {
       const saved = window.localStorage.getItem('factup-theme');
@@ -108,7 +109,7 @@ export default function Home() {
         touchStart.current=null;
         if(Math.abs(dx)>55 && Math.abs(dx)>Math.abs(dy)*1.2) choose(dx>0?'true':'false');
       }} onPointerCancel={() => {touchStart.current=null;}} onPointerLeave={e => {if(e.pointerType==='mouse')touchStart.current=null;}}>
-        <div className="eyebrow">VRAI OU FAUX ?</div><h2>{card.claim}</h2>
+        <div className="eyebrow">VRAI OU FAUX ?</div><h2>{plainLanguage && card.simpleClaim ? card.simpleClaim : card.claim}</h2>{card.simpleClaim && <button type="button" className="plain-language-toggle" aria-pressed={plainLanguage} onClick={() => setPlainLanguage(value => !value)}>{plainLanguage ? "Voir la formulation précise" : "Dire plus simplement"}</button>}
         {answer === null ? <><p className="muted helper">Glisse la carte vers la gauche pour Faux ou vers la droite pour Vrai. Les boutons restent disponibles.</p><div className="actions answer-buttons"><button className="secondary" onClick={() => choose('false')}>← Faux</button><button onClick={() => choose('true')}>Vrai →</button></div><button className="unknown" onClick={() => choose('unknown')}>Je ne sais pas</button></> :
         <div className="answer" aria-live="polite"><span className="pill">{card.answer ? 'VRAI' : 'FAUX'}</span><h3>{answer === 'unknown' ? 'Découvrons la réponse.' : (answer === 'true') === card.answer ? 'Bien vu !' : 'Voici ce que disent les faits.'}</h3><p>{card.explanation}</p><div className="sources"><div className="eyebrow">SOURCES CONSULTABLES</div>{card.sources.map(source=><p key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.label} ↗</a></p>)}<p className="muted">Dernière validation : {card.verifiedAt}</p></div><div className="actions reveal-next"><button onClick={next}>{'Question suivante →'}</button></div></div>}
       </article>
@@ -120,7 +121,7 @@ export default function Home() {
     <section className="resource-section" aria-labelledby="resource-heading">
       <div className="eyebrow">POUR ALLER PLUS LOIN</div>
       <h2 id="resource-heading">S'informer par soi-même</h2>
-      <p className="resource-intro">Retrouve les données, les textes officiels et les vérifications à la source. Compare les méthodes, les dates et les périmètres : aucune source ne remplace l'esprit critique.</p>
+      
       <ul className="resource-list">
         <li><a href="https://factuel.afp.com/" target="_blank" rel="noopener noreferrer"><strong>AFP Factuel</strong><span>Vérification d'affirmations et d'images</span><span className="resource-arrow" aria-hidden="true">↗</span></a></li>
         <li><a href="https://www.insee.fr/" target="_blank" rel="noopener noreferrer"><strong>Insee</strong><span>Population, emploi et inégalités</span><span className="resource-arrow" aria-hidden="true">↗</span></a></li>
@@ -135,6 +136,6 @@ export default function Home() {
       </ul>
       <p className="resource-disclaimer">Sélection indicative de ressources publiques et journalistiques, sans affiliation ni garantie d'infaillibilité.</p>
     </section>
-    <footer className="note"><strong>Notre engagement :</strong> aucune carte jouable sans validation éditoriale, source consultable et date de vérification. Décrypte ne recommande aucun parti ni candidat.</footer>
+    <footer className="note"><strong>À propos de Décrypte.</strong> Un tout petit projet indépendant, né d’une idée simple : rendre plus faciles à comprendre les sujets qui touchent notre quotidien. Des questions, des explications accessibles et des sources pour apprendre à son rythme, sans prise de tête.</footer>
   </main>;
 }
