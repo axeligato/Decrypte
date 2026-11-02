@@ -147,3 +147,12 @@ html{scroll-behavior:smooth}
 .swipe-cue-false{left:14px;color:#bb4545}
 .swipe-cue-true{right:14px;color:#32845c}
 @media(prefers-reduced-motion:reduce){.swipe-card,.swipe-card.swipe-exiting{transition:none!important}}
+
+/* Verdict colors communicate the truth value, not the player's score. */
+.verdict-true{--verdict:#167347;--verdict-ink:#167347}
+.verdict-false{--verdict:#b93d43;--verdict-ink:#b93d43}
+[data-theme="dark"] .verdict-true{--verdict:#237c52;--verdict-ink:#76d9a1}
+[data-theme="dark"] .verdict-false{--verdict:#a9343c;--verdict-ink:#ff9fa5}
+.verdict-pill{background:var(--verdict);color:#fff;border-color:var(--verdict);font-size:14px;font-weight:900;padding:8px 15px;letter-spacing:.07em}
+.verdict-heading{color:var(--verdict-ink);font-size:clamp(26px,5vw,34px);margin:14px 0 4px}
+.answer-feedback{font-weight:700;margin:0 0 14px;color:var(--text)}
