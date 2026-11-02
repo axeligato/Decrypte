@@ -156,3 +156,25 @@ html{scroll-behavior:smooth}
 .verdict-pill{background:var(--verdict);color:#fff;border-color:var(--verdict);font-size:14px;font-weight:900;padding:8px 15px;letter-spacing:.07em}
 .verdict-heading{color:var(--verdict-ink);font-size:clamp(26px,5vw,34px);margin:14px 0 4px}
 .answer-feedback{font-weight:700;margin:0 0 14px;color:var(--text)}
+
+/* Décrypte's own muted blue palette; avoid institutional DSFR styling. */
+:root{
+  --page:#edf3f8;--text:#17283d;--surface:#ffffff;--muted:#52677c;
+  --border:#253e5c;--line:#c9d7e5;--accent:#426b9a;
+  --highlight:#e3edf7;--button:#253e5c;--button-text:#ffffff;
+}
+:root[data-theme="dark"]{
+  --page:#111d30;--text:#eff5fb;--surface:#1b2b43;--muted:#b4c6dc;
+  --border:#c5d5e9;--line:#354963;--accent:#91b8e4;
+  --highlight:#273c59;--button:#dce9f7;--button-text:#17283d;
+}
+/* Legacy hard-coded colors in these controls should follow theme tokens. */
+.category-nav button,.category-trigger{border-color:var(--border)}
+.card,.resource-list a{border-color:var(--line)}
+.card{box-shadow:7px 7px 0 var(--border)}
+button:focus-visible,a:focus-visible{outline-color:var(--accent)}
+/* The single tiny tricolour accent is decorative, not a verdict indicator. */
+.brand{position:relative}
+.brand::after{content:"";display:inline-block;width:12px;height:3px;margin-left:7px;vertical-align:middle;border-radius:3px;background:linear-gradient(90deg,#426b9a 0 33.3%,#fff 33.3% 66.6%,#c96b72 66.6%);box-shadow:0 0 0 1px var(--line)}
+/* Remove floating Sources shortcut even if legacy CSS still exists. */
+.resource-shortcut{display:none!important}
