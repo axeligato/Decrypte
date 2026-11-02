@@ -156,3 +156,19 @@ html{scroll-behavior:smooth}
 .verdict-pill{background:var(--verdict);color:#fff;border-color:var(--verdict);font-size:14px;font-weight:900;padding:8px 15px;letter-spacing:.07em}
 .verdict-heading{color:var(--verdict-ink);font-size:clamp(26px,5vw,34px);margin:14px 0 4px}
 .answer-feedback{font-weight:700;margin:0 0 14px;color:var(--text)}
+
+/* Direction 02: neutral editorial light mode, restrained navy night mode. */
+/* Blue is a brand accent, never a card fill or a true/false indicator. */
+:root{
+  --page:#fafaf8;--text:#1a1d23;--surface:#ffffff;--muted:#62666d;
+  --border:#1a1d23;--line:#dadbdc;--accent:#426ca9;
+  --highlight:#f0f0ec;--button:#1a1d23;--button-text:#ffffff;
+}
+:root[data-theme="dark"]{
+  --page:#151d2a;--text:#f4f4f4;--surface:#26272a;--muted:#c1c3c8;
+  --border:#e5e5e5;--line:#505259;--accent:#8eb1e8;
+  --highlight:#303236;--button:#f4f4f4;--button-text:#17191d;
+}
+button:focus-visible,a:focus-visible{outline-color:var(--accent)}
+/* Retain existing red/green answer verdicts as separate semantic colors. */
+.resource-shortcut{display:none!important}
