@@ -1,5 +1,5 @@
 'use client';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { playableCards } from '../lib/cards';
 
 type Answer = 'true' | 'false' | 'unknown';
@@ -41,6 +41,49 @@ export default function Home() {
   const [answer, setAnswer] = useState<Answer | null>(null);
   const [correct, setCorrect] = useState(0);
   const [finished, setFinished] = useState(false);
+  const [swipeX, setSwipeX] = useState(0);
+  const [swipeExit, setSwipeExit] = useState(false);
+  const swipeStart = useRef<{ x: number; y: number; tracking: boolean } | null>(null);
+  const swipeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const resetSwipe = useCallback(() => {
+    if (swipeTimer.current) clearTimeout(swipeTimer.current);
+    swipeTimer.current = null;
+    swipeStart.current = null;
+    setSwipeX(0);
+    setSwipeExit(false);
+  }, []);
+  useEffect(() => () => { if (swipeTimer.current) clearTimeout(swipeTimer.current); }, []);
+  function onSwipeStart(event: React.TouchEvent<HTMLElement>) {
+    if (answer !== null || swipeExit || event.touches.length !== 1) return;
+    if ((event.target as HTMLElement).closest('button, a')) return;
+    const touch = event.touches[0];
+    swipeStart.current = { x: touch.clientX, y: touch.clientY, tracking: false };
+  }
+  function onSwipeMove(event: React.TouchEvent<HTMLElement>) {
+    const start = swipeStart.current;
+    if (!start || answer !== null || event.touches.length !== 1) return;
+    const touch = event.touches[0];
+    const dx = touch.clientX - start.x;
+    const dy = touch.clientY - start.y;
+    if (!start.tracking && Math.abs(dy) > Math.abs(dx)) { swipeStart.current = null; return; }
+    if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy) * 1.25) start.tracking = true;
+    if (start.tracking) setSwipeX(Math.max(-220, Math.min(220, dx)));
+  }
+  function onSwipeEnd() {
+    const start = swipeStart.current;
+    swipeStart.current = null;
+    if (!start?.tracking) return;
+    if (Math.abs(swipeX) < 90) { setSwipeX(0); return; }
+    const direction = swipeX > 0 ? 'true' : 'false';
+    setSwipeExit(true);
+    setSwipeX(direction === 'true' ? 600 : -600);
+    swipeTimer.current = setTimeout(() => {
+      setAnswer(direction);
+      setSwipeExit(false);
+      setSwipeX(0);
+      swipeTimer.current = null;
+    }, 220);
+  }
   const [progressReady, setProgressReady] = useState(false);
   const sessionCards = useMemo(() => sessionIds.map(id => playableCards.find(c => c.id === id)).filter((c): c is typeof playableCards[number] => Boolean(c)), [sessionIds]);
   const card = sessionCards[index];
@@ -57,6 +100,7 @@ export default function Home() {
     const selected = [...unseen, ...randomized.filter(c => !available.some(a => a.id === c.id))].slice(0,20);
     const nextUsed = available.length < 20 ? selected.map(c=>c.id) : [...used, ...selected.map(c=>c.id)];
     try { window.localStorage.setItem(usedKey, JSON.stringify(nextUsed)); } catch {}
+    resetSwipe();
     setSessionIds(selected.map(c=>c.id));setIndex(0);setAnswer(null);setCorrect(0);setFinished(false);setCopiedResult(false);
   }
   useEffect(() => {
@@ -94,6 +138,7 @@ export default function Home() {
     return () => window.removeEventListener('keydown', onKey);
   }, [card, answer, choose, index, finished]);
   function next() {
+    resetSwipe();
     if (card && answer !== null && answer !== 'unknown' && (answer === 'true') === card.answer) setCorrect(v=>v+1);
     setAnswer(null);
     if(index+1>=sessionCards.length) setFinished(true);
@@ -119,11 +164,11 @@ export default function Home() {
     {playableCards.length === 0 ? <section className="empty" role="status"><span className="pill">Vérification éditoriale en cours</span><h2>Les premières cartes se préparent.</h2><p>Le jeu s'ouvrira quand les premières affirmations auront passé la revue de leurs sources, dates et formulations. Aucun résultat ne sera inventé pour remplir la session.</p><p className="muted">L'interface est prête ; le contenu reste en validation.</p></section> :
     finished ? <section className="card session-results" aria-live="polite"><div className="eyebrow">SÉRIE TERMINÉE</div><h2>{correct} / {sessionCards.length}</h2><p>Tu as répondu correctement à {correct} question{correct>1?'s':''} sur {sessionCards.length}. Les réponses « Je ne sais pas » ne comptent pas comme bonnes réponses.</p><div className="result-sharing"><h3>Partager mon résultat</h3><div className="result-share-links"><a href={`https://wa.me/?text=${encodeURIComponent(shareText)}`} target="_blank" rel="noopener noreferrer" aria-label="Partager sur WhatsApp">WhatsApp ↗</a><a href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}&quote=${encodeURIComponent(shareMessage)}`} target="_blank" rel="noopener noreferrer" aria-label="Partager sur Facebook">Facebook ↗</a><a href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(shareMessage)}&url=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer" aria-label="Partager sur X">X ↗</a><a href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`} target="_blank" rel="noopener noreferrer" aria-label="Partager sur LinkedIn">LinkedIn ↗</a></div><button type="button" className="copy-result" onClick={copyResult}>{copiedResult ? 'Résultat copié ✓' : 'Copier le résultat et le lien'}</button><p className="muted result-share-note">Sur Facebook et LinkedIn, le lien vers Décrypte est partagé ; tu peux ajouter ta note dans ton message.</p></div><button type="button" className="restart-session" onClick={()=>createSession(category)}>Nouvelle série aléatoire →</button></section> : card ? <section className="play-area" aria-label="Question du jeu">
       <div className="progress-label"><span>QUESTION {index+1} / {sessionCards.length}</span><span>{card.category.toUpperCase()}</span></div>
-      <article className="card">
+      <div className="swipe-stage"><span className="swipe-cue swipe-cue-false" aria-hidden="true">FAUX ←</span><span className="swipe-cue swipe-cue-true" aria-hidden="true">→ VRAI</span><article className={`card swipe-card${swipeExit ? ' swipe-exiting' : ''}`} style={{ transform: `translateX(${swipeX}px) rotate(${swipeX / 28}deg)` }} onTouchStart={onSwipeStart} onTouchMove={onSwipeMove} onTouchEnd={onSwipeEnd} onTouchCancel={() => { swipeStart.current = null; setSwipeX(0); }}>
         <div className="eyebrow">VRAI OU FAUX ?</div><h2>{plainLanguage && card.simpleClaim ? card.simpleClaim : card.claim}</h2>{card.simpleClaim && <button type="button" className="plain-language-toggle" aria-pressed={plainLanguage} onClick={() => setPlainLanguage(value => !value)}>{plainLanguage ? "Voir la formulation précise" : "Dire plus simplement"}</button>}
-        {answer === null ? <><p className="muted helper">Choisis une réponse pour découvrir l’explication.</p><div className="actions answer-buttons"><button className="secondary" onClick={() => choose('false')}>← Faux</button><button onClick={() => choose('true')}>Vrai →</button></div><button className="unknown" onClick={() => choose('unknown')}>Je ne sais pas</button></> :
+        {answer === null ? <><p className="muted helper">Glisse à gauche pour Faux, à droite pour Vrai, ou utilise les boutons.</p><div className="actions answer-buttons"><button className="secondary" onClick={() => choose('false')}>← Faux</button><button onClick={() => choose('true')}>Vrai →</button></div><button className="unknown" onClick={() => choose('unknown')}>Je ne sais pas</button></> :
         <div className="answer" aria-live="polite"><span className="pill">{card.answer ? 'VRAI' : 'FAUX'}</span><h3>{answer === 'unknown' ? 'Découvrons la réponse.' : (answer === 'true') === card.answer ? 'Bien vu !' : 'Voici ce que disent les faits.'}</h3><p>{card.explanation}</p><div className="sources"><div className="eyebrow">SOURCES CONSULTABLES</div>{card.sources.map(source=><p key={source.url}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.label} ↗</a></p>)}<p className="muted">Dernière validation : {card.verifiedAt}</p></div><div className="actions reveal-next"><button onClick={next}>{index+1>=sessionCards.length?'Voir ma note sur 20 →':'Question suivante →'}</button></div></div>}
-      </article>
+      </article></div>
       <p className="keyboard-tip">Clavier : ← Faux · → Vrai · J Je ne sais pas · Entrée Suivant</p>
     </section> : null}
 
