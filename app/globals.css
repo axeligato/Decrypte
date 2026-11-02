@@ -137,3 +137,13 @@ html{scroll-behavior:smooth}
 .note .creator-credit{margin-top:12px;font-size:12px;opacity:.75}
 .note .creator-credit a{color:inherit;text-underline-offset:3px;font-weight:600}
 .note .creator-credit a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+
+/* Mobile swipe: feedback is visual only until a deliberate horizontal release. */
+.swipe-stage{position:relative;isolation:isolate}
+.swipe-card{position:relative;z-index:1;will-change:transform;transition:transform .2s ease;touch-action:pan-y}
+.swipe-card:active:not(.swipe-exiting){transition:none}
+.swipe-card.swipe-exiting{transition:transform .22s ease-in,opacity .22s ease-in;opacity:.35}
+.swipe-cue{position:absolute;top:36%;font-size:17px;font-weight:900;letter-spacing:.08em;z-index:0;opacity:.65}
+.swipe-cue-false{left:14px;color:#bb4545}
+.swipe-cue-true{right:14px;color:#32845c}
+@media(prefers-reduced-motion:reduce){.swipe-card,.swipe-card.swipe-exiting{transition:none!important}}
