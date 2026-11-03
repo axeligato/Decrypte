@@ -182,3 +182,7 @@ button:focus-visible,a:focus-visible{outline-color:var(--accent)}
 @media(prefers-reduced-motion:reduce){
   .answer-reveal{animation:none!important}
 }
+
+/* A discreet help affordance for the plain-language toggle. */
+.plain-language-toggle{gap:7px}
+.plain-language-help-icon{display:inline-flex;align-items:center;justify-content:center;flex:none;width:17px;height:17px;border:1.5px solid currentColor;border-radius:50%;font-size:11px;font-weight:800;line-height:1}
