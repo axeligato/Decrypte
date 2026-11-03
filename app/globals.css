@@ -172,3 +172,13 @@ html{scroll-behavior:smooth}
 button:focus-visible,a:focus-visible{outline-color:var(--accent)}
 /* Retain existing red/green answer verdicts as separate semantic colors. */
 .resource-shortcut{display:none!important}
+
+/* Fade & Rise: one subtle reveal for both touch swipes and button/keyboard answers. */
+@keyframes answer-fade-rise{
+  from{opacity:0;transform:translateY(12px)}
+  to{opacity:1;transform:translateY(0)}
+}
+.answer-reveal{animation:answer-fade-rise 300ms cubic-bezier(.2,.7,.2,1) both}
+@media(prefers-reduced-motion:reduce){
+  .answer-reveal{animation:none!important}
+}
